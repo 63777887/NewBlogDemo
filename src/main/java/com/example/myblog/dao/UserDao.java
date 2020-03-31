@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserDao {
-    public User selectUserByName(String name);
+     User findUserByName(String name);
 }
