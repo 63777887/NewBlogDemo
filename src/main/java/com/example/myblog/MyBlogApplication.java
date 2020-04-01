@@ -2,6 +2,7 @@ package com.example.myblog;
 
 import com.example.myblog.bean.User;
 import com.example.myblog.dao.BlogDao;
+import com.example.myblog.dao.CommentDao;
 import com.example.myblog.dao.UserDao;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -16,8 +17,11 @@ public class MyBlogApplication {
         UserDao userDao = context.getBean(UserDao.class);
         User user=userDao.findUserByName("用户9");
         System.out.println(userDao.findUserByName("用户9").toString());
-//        BlogDao bean = context.getBean(BlogDao.class);
-//        System.out.println(bean.findBlogById(202));
+        BlogDao bean = context.getBean(BlogDao.class);
+        System.out.println(bean.findBlogInfoByBlogId(209));
+        System.out.println();
+        CommentDao bean1 = context.getBean(CommentDao.class);
+        System.out.println(bean1.findCommentByBlogId(209));
 
     }
 

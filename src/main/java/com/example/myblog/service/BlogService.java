@@ -19,6 +19,9 @@ public class BlogService {
     public Blog getBlogById(Integer id){
         return blogDao.findBlogById(id);
     }
+    public Blog getBlogInfoById(Integer id){
+        return blogDao.findBlogInfoByBlogId(id);
+    }
 
     public PageInfo<Blog> pageUserBlog(String username, Integer page, Integer size){
         PageHelper.startPage(page,size);

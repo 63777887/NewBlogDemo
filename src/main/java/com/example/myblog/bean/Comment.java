@@ -3,15 +3,13 @@ package com.example.myblog.bean;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class Blog {
+public class Comment {
     private Integer id;
-    private String title;
-    private String content;
     private Date createdTime;
+    private String content;
     private Integer userId;
-    private List<Comment> comments;
+    private Integer blogId;
 
 }

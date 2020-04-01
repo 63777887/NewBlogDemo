@@ -118,7 +118,7 @@
             </form>
         </div>
         <ul class="list-unstyled">
-          <li class="clearfix content comment-item" th:each="comment: ${comments}">
+          <li class="clearfix content comment-item" th:each="comment: ${blog.comments}">
             <img src="/img/catty.jpeg" alt="" class="avatar pull-left">
             <!--<div class="blog-post" th:each="blog: ${blogs.content}">
               <h3 class="blog-post-title"><a th:text="${blog.title}" th:href="@{'/blogs/' + ${blog.id}}">"${blog.title}"</a></h3>
