@@ -20,12 +20,15 @@ public class BlogService {
         return blogDao.findBlogById(id);
     }
     public Blog getBlogInfoById(Integer id){
-        return blogDao.findBlogInfoByBlogId(id);
+        return blogDao.findBlogDetailByBlogId(id);
     }
 
-    public PageInfo<Blog> pageUserBlog(String username, Integer page, Integer size){
-        PageHelper.startPage(page,size);
-        List<Blog> allBlogs= blogDao.findBlogsByUserName(username);
-        return new PageInfo<Blog>(allBlogs);
+    public List<Blog> pageUserBlog(String username){
+        List<Blog> blogs= blogDao.findBlogsByUserName(username);
+        return blogs;
+    }
+    public void createBlog(Blog blog){
+//        blogDao.insertBlog(blog.getTitle(), blog.getContent(), blog.getAuthor().getId());
+        blogDao.insertBlog(blog);
     }
 }

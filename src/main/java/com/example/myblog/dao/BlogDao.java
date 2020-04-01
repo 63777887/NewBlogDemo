@@ -9,5 +9,8 @@ import java.util.List;
 public interface BlogDao {
     Blog findBlogById(Integer id);
     List<Blog> findBlogsByUserName(String username);
-    Blog findBlogInfoByBlogId(Integer id);
+    Blog findBlogDetailByBlogId(Integer id);
+
+//    void insertBlog(String title,String content,Integer userId);
+    void insertBlog(Blog blog);
 }

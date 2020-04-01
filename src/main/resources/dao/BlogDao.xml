@@ -2,12 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.myblog.dao.BlogDao">
+    <resultMap id="blogMap" type="com.example.myblog.bean.Blog" autoMapping="true">
+        <id property="id" column="id"></id>
+        <association property="author" javaType="com.example.myblog.bean.User"
+                     columnPrefix="author_" autoMapping="true">
+            <id property="id" column="id"></id>
+        </association>
+    </resultMap>
+    <resultMap id="blogDetail" type="com.example.myblog.bean.Blog" autoMapping="true">
+        <id property="id" column="id"></id>
+        <association property="author" javaType="com.example.myblog.bean.User"
+                     columnPrefix="author_" autoMapping="true">
+            <id property="id" column="id"></id>
+        </association>
+        <collection property="comments" ofType="com.example.myblog.bean.Comment"
+                    columnPrefix="comment_" autoMapping="true">
+            <id property="id" column="id"></id>
+            <association property="commenter" javaType="com.example.myblog.bean.User"
+                         autoMapping="true" columnPrefix="commenter_">
+                <id property="id" column="id"></id>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="findBlogDetailByBlogId" resultMap="blogDetail">
+        select blog.id, blog.title, blog.content, blog.created_time, blog.user_id ,
+        author.id as author_id,author.name as author_name,
+        author.password as author_password,author.email as author_email,
+        comment.id as comment_id,comment.created_time as comment_created_time,
+        comment.content as comment_content,
+        comment.user_id as comment_user_id,
+        comment.blog_id as comment_blog_id,
+        commenter.id as comment_commenter_id,
+        commenter.name as comment_commenter_name,
+        commenter.password as comment_commenter_password,
+        commenter.email as comment_commenter_email
+        from blog join user as author on blog.user_id = author.id
+         left join comment on  blog.id = comment.blog_id
+        left join user as commenter on comment.user_id = commenter.id where blog.id = #{id}
+    </select>
     <select id="findBlogById" resultType="com.example.myblog.bean.Blog">
         SELECT * FROM blog WHERE id = #{id}
     </select>
-    <select id="findBlogsByUserName" resultType="com.example.myblog.bean.Blog">
-        select blog.id,blog.title,blog.content,blog.created_time,blog.user_id from blog
-    inner join user on blog.user_id = user.id where user.name = #{username}
+    <select id="findBlogsByUserName" resultMap="blogMap">
+        select blog.id,blog.title,blog.content,blog.created_time,
+        blog.user_id,user.id as author_id,user.email as author_email,
+        user.password as author_password,user.name as author_name
+        from blog
+         join user on blog.user_id = user.id where user.name = #{username}
 
     </select>
+    <insert id="insertBlog" parameterType="com.example.myblog.bean.Blog">
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO blog (title, content, user_id)
+        VALUES
+        (#{title}, #{content}, #{author.id})
+    </insert>
 </mapper>

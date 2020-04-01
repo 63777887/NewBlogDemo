@@ -9,7 +9,7 @@ public class Comment {
     private Integer id;
     private Date createdTime;
     private String content;
-    private Integer userId;
+    private User commenter;
     private Integer blogId;
 
 }

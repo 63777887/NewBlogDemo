@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Lorem 的博客</a>
+      <a class="navbar-brand" href="/" th:text="${blog.author.name}">Lorem 的博客</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -126,7 +126,7 @@
               <p class="blog-post-content" th:text="${blog.content}">"${blog.content}"</p>
               -->
             <p>
-              <a href="#" th:text="${comment.userId}">"${comment.userId}",</a>
+              <a href="#" th:text="${comment.commenter.name}">"${comment.userId}",</a>
               <span class="text-muted date" th:text="${comment.createdTime}"> "${comment.createdTime}"</span>
               <textarea disabled th:text="${comment.content}">"${comment.content}"</textarea>
             </p>
@@ -150,8 +150,8 @@
         <div class="avatar">
           <img class="img-circle img-rounded img-thumbnail avatar" src="/img/catty.jpeg">
           <div>
-            <h4>Lorem</h4>
-            <a>lorem@example.com</a>
+            <h4 th:text="${blog.author.name}">Lorem</h4>
+            <a th:text="${blog.author.email}">lorem@example.com</a>
           </div>
         </div>
         <p>Ornare sapien rhoncus, nec mi hendrerit. Ante aliquam dui arcu, diam sodales erat felis dolor sed in, nec
