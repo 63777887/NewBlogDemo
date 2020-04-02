@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,23 +49,32 @@ public class BlogController {
     @GetMapping("/blog/{id}")
     public String showBlogById(@PathVariable("id") Integer id,
                         Model model){
+
         Blog blog = blogService.getBlogInfoById(id);
 //        Blog blog = blogService.getBlogById(id);
 //        List<Comment> comments = commentService.findCommentByBlogId(id);
         model.addAttribute("blog",blog);
 //        model.addAttribute("comments",comments);
+
         return "item";
     }
 
     @GetMapping("/blog/create")
-    public String showCreate(){
-        return "create";
+    public String showCreate(HttpSession session,
+                             HttpServletRequest request){
+        User user = (User) session.getAttribute("USER");
+        if (user!=null){
+            return "create";
+        }else {
+            return "redirect:/login?next=".concat(request.getRequestURI());
+        }
     }
 
 
     @PostMapping("/blog/create")
     public String createBlog(Blog blog,
                              Model model){
+
         User aa = userService.findUserByName("aa");
 
         blog.setAuthor(aa);
@@ -71,6 +82,7 @@ public class BlogController {
         blogService.createBlog(blog);
         System.out.println(blog.getId());
         return "redirect:/blog/"+blog.getId();
+
     }
 
 }
