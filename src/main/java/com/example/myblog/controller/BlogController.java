@@ -8,7 +8,6 @@ import com.example.myblog.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,6 @@ public class BlogController {
     @Autowired
     CommentService commentService;
 
-    @Cacheable
     @GetMapping("blogger/{username}")
     public String showBlogsByUserName(@PathVariable("username") String username,
                                       @RequestParam Optional<Integer> page,
@@ -63,11 +61,11 @@ public class BlogController {
     public String showCreate(HttpSession session,
                              HttpServletRequest request){
         User user = (User) session.getAttribute("USER");
-        if (user!=null){
+//        if (user!=null){
             return "create";
-        }else {
-            return "redirect:/login?next=".concat(request.getRequestURI());
-        }
+//        }else {
+//            return "redirect:/login?next=".concat(request.getRequestURI());
+//        }
     }
 
 
@@ -82,7 +80,32 @@ public class BlogController {
         blogService.createBlog(blog);
         System.out.println(blog.getId());
         return "redirect:/blog/"+blog.getId();
+    }
 
+    @DeleteMapping("/blog/{blogId}")
+    public String deleteBlog(@PathVariable("blogId") Integer id,
+                             HttpSession session){
+        Blog blog = blogService.getBlogInfoById(id);
+        User user = (User) session.getAttribute("USER");
+        if (user.getName().equals(blog.getAuthor().getName())) {
+            blogService.deleteBlogById(id);
+        }
+        return "redirect:/admin/"+user.getName();
+    }
+
+    @GetMapping("/blogs/{blogId}/edit")
+    public String showEdit(@PathVariable("blogId") Integer id,
+                           Model model){
+        Blog blog = blogService.getBlogInfoById(id);
+        model.addAttribute("blog",blog);
+        return "edit";
+    }
+
+    @PutMapping("/blogs/{blogId}/edit")
+    public String putBlog(@PathVariable("blogId") Integer id,
+                          Blog blog){
+        blogService.putBlog(blog,id);
+        return "redirect:/admin/aa";
     }
 
 }

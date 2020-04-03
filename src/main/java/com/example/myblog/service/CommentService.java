@@ -13,6 +13,7 @@ public class CommentService {
     @Autowired
     CommentDao commentDao;
 
+
     public List<Comment> findCommentByBlogId(Integer id){
         List<Comment> comments = commentDao.findCommentByBlogId(id);
         return comments;

@@ -59,4 +59,10 @@
         VALUES
         (#{title}, #{content}, #{author.id})
     </insert>
+    <delete id="deleteBlogById">
+        DELETE FROM blog WHERE id = #{blogId}
+    </delete>
+    <update id="putBlog" parameterType="com.example.myblog.bean.Blog">
+        update blog set title=#{blog.title},content=#{blog.content} where id=#{id}
+    </update>
 </mapper>

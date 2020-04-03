@@ -23,7 +23,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="list.html">Lorem 的博客</a>
+      <a class="navbar-brand" href="list.html" th:text="${username}">Lorem 的博客</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -49,7 +49,7 @@
       <strong>Ha!</strong> 注册成功了,开始创建你的博客吧!
     </div>
 
-    <h1 class="blog-title">Lorem 的博客
+    <h1 class="blog-title" th:text="${username}">的博客
       <small class="blog-description">Mi nunc congue nunc, ante felis vestibulum bibendum.</small>
     </h1>
   </div>
@@ -75,7 +75,7 @@
             <a class="btn btn-primary blog-post-edit-btn" th:href="@{'/blogs/' + ${blog.id} + '/edit'}">编辑</a>
             <form class="blog-post-delete-form" th:action="|/blog/${blog.id}|" method="post" onsubmit="return confirm('确定要删除这篇文章吗？');">
               <input type="hidden" name="_method" value="delete">
-              <button type="submit" class="btn btn-danger blog-post-delete-btn">删除</button>
+              <button type="submit" class="btn btn-danger blog-post-delete-btn" id="tellMsg">删除</button>
             </form>
           </td>
         </tr>
@@ -111,4 +111,7 @@
 </div>
 
 </body>
+<script>
+
+</script>
 </html>

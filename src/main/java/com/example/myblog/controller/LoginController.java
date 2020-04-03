@@ -5,6 +5,7 @@ import com.example.myblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,28 +24,22 @@ public class LoginController {
     @GetMapping("/login")
     public String showLogin(@RequestParam(required = false) String next,
                             HttpSession session){
-        if (next!=null){
-            session.setAttribute("NEXT_URI", next);
-        }
+        session.removeAttribute("USER");
         return "login";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
-                        HttpSession session){
+                        HttpSession session,
+                        Model model){
         User user = userService.findUserByName(username);
         if (user!=null && password.equals(user.getPassword())){
             session.setAttribute("USER", user);
-            String nextUrl = (String) session.getAttribute("NEXT_URI");
-            if (nextUrl.contains("next")){
-                String [] uriSplit = nextUrl.split("/");
-                String redirectUrl = "";
-                for (String i: uriSplit) {
-                    if (i.length() > 0)
-                        redirectUrl += "/"+i;
-                }
-                return "redirect:"+redirectUrl;
+            String nextUrl = (String) session.getAttribute("NEXT");
+            if (nextUrl!=null){
+                session.removeAttribute("NEXT");
+                return "redirect:".concat(nextUrl);
             }else {
                 return "redirect:/admin/"+username;
             }
