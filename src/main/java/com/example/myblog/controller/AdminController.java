@@ -28,9 +28,7 @@ public class AdminController {
             @RequestParam Optional<Integer> size,
             Model model,
             HttpSession session) {
-        PageHelper.startPage(page.orElse(1),size.orElse(5));
-        List<Blog> blogs = blogService.pageUserBlog(username);
-        PageInfo<Blog> blogPageInfo = new PageInfo<>(blogs);
+        PageInfo<Blog> blogPageInfo = blogService.pageUserBlog(username, page.orElse(1), size.orElse(10));
         User user=(User) session.getAttribute("USER");
         model.addAttribute("blogs", blogPageInfo);
         model.addAttribute("username", username);

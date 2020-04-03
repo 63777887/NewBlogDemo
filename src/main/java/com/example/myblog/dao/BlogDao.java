@@ -18,4 +18,5 @@ public interface BlogDao {
     void deleteBlogById(Integer blogId);
 
     void putBlog(Blog blog, Integer id);
+    List<Blog> getAllBlog();
 }

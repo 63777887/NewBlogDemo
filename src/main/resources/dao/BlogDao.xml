@@ -40,9 +40,9 @@
          left join comment on  blog.id = comment.blog_id
         left join user as commenter on comment.user_id = commenter.id where blog.id = #{id}
     </select>
-    <select id="findBlogById" resultType="com.example.myblog.bean.Blog">
-        SELECT * FROM blog WHERE id = #{id}
-    </select>
+<!--    <select id="findBlogById" resultType="com.example.myblog.bean.Blog">-->
+<!--        SELECT * FROM blog WHERE id = #{id}-->
+<!--    </select>-->
     <select id="findBlogsByUserName" resultMap="blogMap">
         select blog.id,blog.title,blog.content,blog.created_time,
         blog.user_id,user.id as author_id,user.email as author_email,
@@ -50,6 +50,13 @@
         from blog
          join user on blog.user_id = user.id where user.name = #{username}
 
+    </select>
+    <select id="getAllBlog" resultMap="blogMap">
+        select blog.id,blog.title,blog.content,blog.created_time,
+        blog.user_id,user.id as author_id,user.email as author_email,
+        user.password as author_password,user.name as author_name
+        from blog
+         join user on blog.user_id = user.id order by blog.id desc
     </select>
     <insert id="insertBlog" parameterType="com.example.myblog.bean.Blog">
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">

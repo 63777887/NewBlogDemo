@@ -7,7 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-<img th:src="">
-
+<!--<img th:src="@{'/'+${name}+'.jpg'}" rel="未找到图片"/>-->
+<img th:src="@{'/picView/'+${filename}}" rel="未找到图片"/>
 </body>
 </html>

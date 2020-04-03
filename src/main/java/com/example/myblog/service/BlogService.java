@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,9 +26,9 @@ public class BlogService {
     }
 
 //    @Cacheable(value = "blog")
-    public List<Blog> pageUserBlog(String username){
-        List<Blog> blogs= blogDao.findBlogsByUserName(username);
-        return blogs;
+    public PageInfo<Blog> pageUserBlog(String username, Integer page, Integer size){
+        PageHelper.startPage(page,size);
+       return new PageInfo<Blog>(blogDao.findBlogsByUserName(username));
     }
 
     public void createBlog(Blog blog){
@@ -44,4 +45,9 @@ public class BlogService {
         blogDao.putBlog(blog,id);
         return blogDao.findBlogDetailByBlogId(id);
     }
+    public PageInfo<Blog> getAllBlog(Integer page, Integer size){
+        PageHelper.startPage(page,size);
+        return new PageInfo<Blog>(blogDao.getAllBlog());
+    }
+
 }

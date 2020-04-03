@@ -34,11 +34,9 @@ public class BlogController {
                                       @RequestParam Optional<Integer> page,
                                       @RequestParam Optional<Integer> size,
                                       Model model){
-        PageHelper.startPage(page.orElse(1),size.orElse(2));
 //        User user = userService.findUserByName(username);
-        List<Blog> blogs = blogService.pageUserBlog(username);
-        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
-        User user = blogs.get(0).getAuthor();
+        PageInfo<Blog> pageInfo = blogService.pageUserBlog(username, page.orElse(1), size.orElse(2));
+        User user = pageInfo.getList().get(0).getAuthor();
         model.addAttribute("user",user);
         model.addAttribute("blogs",pageInfo);
         return "list";
