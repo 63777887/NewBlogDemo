@@ -29,9 +29,9 @@ public class MailController {
 @ResponseBody
 void sendActiveMail(HttpServletRequest request){
     String email = request.getParameter("email");
-    System.out.println("email"+email);
+//    System.out.println("email"+email);
     String name = userService.findUserNameByEmail(email);
-    System.out.println(name);
+//    System.out.println(name);
     String count = redisService.getCount(name);
     if (count==null){
         redisService.tokenCount(name,"1",24*60*60);
@@ -62,10 +62,10 @@ void sendActiveMail(HttpServletRequest request){
     String check(@RequestParam("code") String code,
                  @PathVariable("name") String name){
 
-        System.out.println(name);
+//        System.out.println(name);
         String token = redisService.getTokenByName(name);
-        System.out.println(token);
-        System.out.println(code);
+//        System.out.println(token);
+//        System.out.println(code);
         if (code.equals(token)){
             return "激活成功";
         }else {
