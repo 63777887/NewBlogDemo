@@ -1,5 +1,7 @@
 package com.example.myblog;
 
+import com.example.myblog.service.RedisService;
+import com.example.myblog.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,12 @@ import java.sql.SQLException;
 class MyBlogApplicationTests {
     @Autowired
     DataSource dataSource;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RedisService redisService;
     @Test
     void contextLoads() {
     }
@@ -23,5 +31,9 @@ class MyBlogApplicationTests {
         System.out.println(connection);
         connection.close();
 
+    }
+    @Test
+    void test02(){
+        System.out.println(redisService.getCount("aa"));
     }
 }

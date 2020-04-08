@@ -5,16 +5,14 @@ import com.example.myblog.bean.User;
 import com.example.myblog.service.BlogService;
 import com.example.myblog.service.CommentService;
 import com.example.myblog.service.UserService;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,6 +27,8 @@ public class BlogController {
     @Autowired
     CommentService commentService;
 
+
+
     @GetMapping("blogger/{username}")
     public String showBlogsByUserName(@PathVariable("username") String username,
                                       @RequestParam Optional<Integer> page,
@@ -42,68 +42,8 @@ public class BlogController {
         return "list";
     }
 
-    @GetMapping("/blog/{id}")
-    public String showBlogById(@PathVariable("id") Integer id,
-                        Model model){
-
-        Blog blog = blogService.getBlogInfoById(id);
-//        Blog blog = blogService.getBlogById(id);
-//        List<Comment> comments = commentService.findCommentByBlogId(id);
-        model.addAttribute("blog",blog);
-//        model.addAttribute("comments",comments);
-
-        return "item";
-    }
-
-    @GetMapping("/blog/create")
-    public String showCreate(HttpSession session,
-                             HttpServletRequest request){
-        User user = (User) session.getAttribute("USER");
-//        if (user!=null){
-            return "create";
-//        }else {
-//            return "redirect:/login?next=".concat(request.getRequestURI());
-//        }
-    }
 
 
-    @PostMapping("/blog/create")
-    public String createBlog(Blog blog,
-                             Model model){
 
-        User aa = userService.findUserByName("aa");
-
-        blog.setAuthor(aa);
-//        model.addAttribute("user",aa);
-        blogService.createBlog(blog);
-        System.out.println(blog.getId());
-        return "redirect:/blog/"+blog.getId();
-    }
-
-    @DeleteMapping("/blog/{blogId}")
-    public String deleteBlog(@PathVariable("blogId") Integer id,
-                             HttpSession session){
-        Blog blog = blogService.getBlogInfoById(id);
-        User user = (User) session.getAttribute("USER");
-        if (user.getName().equals(blog.getAuthor().getName())) {
-            blogService.deleteBlogById(id);
-        }
-        return "redirect:/admin/"+user.getName();
-    }
-
-    @GetMapping("/blogs/{blogId}/edit")
-    public String showEdit(@PathVariable("blogId") Integer id,
-                           Model model){
-        Blog blog = blogService.getBlogInfoById(id);
-        model.addAttribute("blog",blog);
-        return "edit";
-    }
-
-    @PutMapping("/blogs/{blogId}/edit")
-    public String putBlog(@PathVariable("blogId") Integer id,
-                          Blog blog){
-        blogService.putBlog(blog,id);
-        return "redirect:/admin/aa";
-    }
 
 }

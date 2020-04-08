@@ -2,116 +2,101 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
+<script>
+    function show_change_passwd() {
+        let passwd;
+
+        passwd = $("#change-passwd");
+        passwd.empty();
+        var form = $('<form method="post" id = "change_passwd" action="/login/change-password"></form>');
+        var out1 = $('<input type="password" name="oldPasswd">旧密码</input>');
+        form.append(out1);
+        form.append("<tr>");
+        var out2 = $('<input type="password" name="newPasswd">新密码</input>');
+        form.append(out2);
+        form.append($('<tr>'));
+        form.append($('<a href="/admin" class="btn btn-primary blog-post-create-btn">取消</a>'));
+        form.append($('<button type="submit" class="btn btn-primary blog-post-create-btn" >确定</button>'));
+        passwd.append(form);
+        console.log("to execute");
+        console.log(passwd);
+    }
+
+</script>
+
+
 <head lang="en">
-  <meta charset="UTF-8">
-  <title>文章列表</title>
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/footer.css">
-  <link rel="stylesheet" href="/css/blog.css">
-  <link rel="stylesheet" href="/css/admin.css">
-  <script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>账号管理</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="list.html" th:text="${username}">Lorem 的博客</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="homepage.html">首页</a></li>
-        <li><a href="#">最近</a></li>
-        <li><a href="#">归档</a></li>
-        <li><a href="#">关于</a></li>
-      </ul>
-      <form class="navbar-form navbar-right">
-        <input type="text" class="form-control" placeholder="搜索...">
-      </form>
-    </div>
-  </div>
-</nav>
 
+<!--/*@thymesVar id="message" type="java.lang.String"*/-->
+
+<div class="alert alert-success" th:unless="${#strings.isEmpty(message)}">
+    <p th:text="${message}"></p>
+</div>
+
+<!--/*@thymesVar id="user" type="com.example.myblog.bean.User"*/-->
 <div class="container">
+    <h2>用户名
+        <td th:text="${user.name}">"${user.name}"</td>
+    </h2>
 
-  <div class="page-header">
+    <h2>
+        <div>创建blog
+            <a href="/admin/blog/create" class="btn btn-primary blog-post-create-btn">创建新博客</a>
+        </div>
+    </h2>
 
-    <div class="alert alert-success" th:unless="${#strings.isEmpty(message)}">
-<!--    <div class="alert alert-success">-->
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Ha!</strong> 注册成功了,开始创建你的博客吧!
+    <div id="change-passwd">
+        <!-- 这里应该是一个按钮,用户点击后刷新这个地方,输入旧密码和新密码   -->
+        <button class="change-passwd-button" onclick='show_change_passwd()'>修改密码</button>
     </div>
+    <h2>
+        忘记密码
+    </h2>
 
-    <h1 class="blog-title" th:text="${username}">的博客
-      <small class="blog-description">Mi nunc congue nunc, ante felis vestibulum bibendum.</small>
-    </h1>
-  </div>
-  <div>
-    <a href="#" class="btn btn-primary blog-post-create-btn">创建新博客</a>
-  </div>
-  <div class="row">
-
-    <div class="table-responsive blog-post-list">
-      <table class="table table-striped blog-post-list-table">
-        <thead>
-        <tr>
-          <th>文章标题</th>
-          <th>创建时间</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="blog-post" th:each="blog: ${blogs.list}">
-          <td class="blog-post-title" th:text="${blog.title}">"${blog.title}"</td>
-          <td class="blog-post-create-date" th:text="${#dates.format(blog.createdTime, 'yyyy年MM月dd日')}">"{blog.createdTime}"</td>
-          <td>
-            <a class="btn btn-primary blog-post-edit-btn" th:href="@{'/blogs/' + ${blog.id} + '/edit'}">编辑</a>
-            <form class="blog-post-delete-form" th:action="|/blog/${blog.id}|" method="post" onsubmit="return confirm('确定要删除这篇文章吗？');">
-              <input type="hidden" name="_method" value="delete">
-              <button type="submit" class="btn btn-danger blog-post-delete-btn" id="tellMsg">删除</button>
+    <h2>
+        <div>展示头像和修改头像
+            <tr></tr>
+            <!-- 用户头像的地址使用什么来获取 -->
+            <img th:src="@{'/avatar/' + ${user.name}}">
+            <tr></tr>
+            <form method="POST" enctype="multipart/form-data" action="/upload">
+                File to upload: <input type="file" name="file"><br />
+                Name: <input type="text" name="name"><br /> <br />
+                <input type="submit" value="Upload"> Press here to upload the file!
             </form>
-          </td>
-        </tr>
-        <tr class="blog-post" th:remove="all">
-          <td class="blog-post-title">Vel volutpat dictum sagittis lacus</td>
-          <td class="blog-post-create-date">2015年2月3日</td>
-          <td>
-            <a class="btn btn-primary blog-post-edit-btn" href="#">编辑</a>
-            <form class="blog-post-delete-form" action="#" method="post" onsubmit="return confirm('确定要删除这篇文章吗？');">
-              <button type="submit" class="btn btn-danger blog-post-delete-btn">删除</button>
+        </div>
+    </h2>
+
+    <h2>
+        <div>是否允许修改邮箱</div>
+    </h2>
+
+    <h2>
+        <div>blog管理
+            <a href="/admin/blogs" class="btn btn-primary blog-post-create-btn">管理blog</a>
+        </div>
+    </h2>
+
+    <h2>
+        <div>blog管理
+            <form method="post" action="/logout">
+                <button type="submit" class="btn btn-primary blog-post-create-btn" >log out</button>
             </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <nav>
-      <ul class="pager">
-<!--
-        <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> 上一页</a></li>
-        <li class="next"><a href="#">下一页 <span aria-hidden="true">&rarr;</span></a></li>
--->
-
-        <li th:if="${blogs.hasPreviousPage}" class="previous"><a th:href="@{'/admin/'+ ${username} + '?page=' + ${blogs.prePage}}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
-        <li th:if="${blogs.hasNextPage}" class="next"><a th:href="@{'/admin/'+ ${username} + '?page=' + ${blogs.nextPage}}">下一页 <span aria-hidden="true">&rarr;</span></a></li>
-
-      </ul>
-    </nav>
-
-  </div>
-
+        </div>
+    </h2>
 </div>
 
 </body>
-<script>
 
-</script>
 </html>

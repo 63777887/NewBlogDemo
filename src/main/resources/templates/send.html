@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;">
+<title>jQuery移动端手机获取验证码 - 源码之家</title>
+
+<link href="/css/layer.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/layer.js"></script>
+<script type="text/javascript" src="/js/phone.js"></script>
+<script type="text/javascript" src="/js/the_code.js"></script>
+
+</head>
+<body>
+
+<div class="the-code">
+	<div class="the-content">
+		<form th:action="@{'/active/'+${name}}" class="the-forms" method="post">
+			<input type="tel" class="login_ipt error" id="add_phone" value="" name="yzm_tel" placeholder="请输入您的邮箱" />
+			<input type="button" class="close_tel" id="addSendCode" value="获取验证码" onClick="sendAddmes()" />
+			<input type="number" name="code" class="code error" id="code" value="" placeholder="请输入验证码" />
+			<div class="updateBtn" >
+				<input type="submit" style="float: right" class="close_tel" value="提交">
+			</div>
+		</form>
+	</div>
+</div>
+<div style="text-align:center;">
+</div>
+</body>
+</html>

@@ -20,7 +20,7 @@ public class BlogService {
     private BlogDao blogDao;
 
 
-    @Cacheable(value = "blog",key = "#id")
+//    @Cacheable(value = "blog",key = "#id")
     public Blog getBlogInfoById(Integer id){
         return blogDao.findBlogDetailByBlogId(id);
     }
@@ -40,7 +40,7 @@ public class BlogService {
         blogDao.deleteBlogById(bolgId);
     }
 
-    @CachePut(value = "blog",key = "#id")
+//    @CachePut(value = "blog",key = "#id")
     public Blog putBlog(Blog blog,Integer id) {
         blogDao.putBlog(blog,id);
         return blogDao.findBlogDetailByBlogId(id);
@@ -49,5 +49,7 @@ public class BlogService {
         PageHelper.startPage(page,size);
         return new PageInfo<Blog>(blogDao.getAllBlog());
     }
+
+
 
 }

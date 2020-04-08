@@ -19,4 +19,5 @@ public interface BlogDao {
 
     void putBlog(Blog blog, Integer id);
     List<Blog> getAllBlog();
+
 }

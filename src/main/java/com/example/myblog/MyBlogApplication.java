@@ -16,13 +16,12 @@ public class MyBlogApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MyBlogApplication.class, args);
-        UserDao userDao = context.getBean(UserDao.class);
-        System.out.println(userDao.findUserByName("用户9").toString());
-        BlogDao blogDao = context.getBean(BlogDao.class);
-        System.out.println(blogDao.findBlogDetailByBlogId(209));
-        System.out.println();
-        CommentDao bean1 = context.getBean(CommentDao.class);
-        System.out.println(bean1.findCommentByBlogId(209));
+//        UserDao userDao = context.getBean(UserDao.class);
+//        System.out.println(userDao.findUserByName("用户9").toString());
+//        BlogDao blogDao = context.getBean(BlogDao.class);
+//        System.out.println(blogDao.findBlogDetailByBlogId(209));
+//        CommentDao bean1 = context.getBean(CommentDao.class);
+//        System.out.println(bean1.findCommentByBlogId(209));
 
     }
 

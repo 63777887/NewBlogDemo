@@ -6,4 +6,16 @@
     <select id="findUserByName" resultType="com.example.myblog.bean.User">
         select * from user where name = #{name};
     </select>
+
+    <select id="findUserNameByEmail" resultType="java.lang.String">
+        select name from user where email = #{email};
+    </select>
+
+    <update id="updatePasswd">
+        UPDATE user SET password=#{passwd} where `id` = #{id}
+    </update>
+
+    <update id="updateAvatar">
+        UPDATE user SET avatar=#{avatarPath} where `id` = #{id}
+    </update>
 </mapper>
