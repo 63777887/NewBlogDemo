@@ -23,6 +23,8 @@ public class MyBlogApplication {
 //        CommentDao bean1 = context.getBean(CommentDao.class);
 //        System.out.println(bean1.findCommentByBlogId(209));
 
+
+
     }
 
 }
