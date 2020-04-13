@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -13,6 +14,19 @@ public class UserDetailsImpl implements UserDetails {
 
     public UserDetailsImpl(User user) {
         this.user=user;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User){
+            return this.user.getName().equals(((User) obj).getName());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.user.getName().hashCode();
     }
 
     @Override
@@ -49,4 +63,5 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

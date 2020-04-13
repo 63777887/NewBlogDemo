@@ -36,16 +36,59 @@
 
 <form class="form-signin" method="post" action="/login">
   <h2 class="form-signin-heading">用户登录</h2>
-  <input type="text" name="username" class="form-control" placeholder="电子邮件或用户名" required="" autofocus="">
-  <input type="password" name="password" class="form-control" placeholder="密码" required="">
+  <input type="text" id="username" name="username" class="form-control" placeholder="电子邮件或用户名" required="" autofocus="">
+  <input type="password" id="password" name="password" class="form-control" placeholder="密码" required="">
+  <span>验证码: </span><input type="text" name="captchaCode" id="captchaCode"/>
+  <img src="/kaptcha" id="kaptcha" width="120px" height="40px"/> <br>
+  <img>
   <div class="checkbox">
     <label>
       <input type="checkbox" value="remember-me"> 记住我
     </label>
   </div>
-  <button class="btn btn-primary btn-block" type="submit">确定</button>
+  <input type="button" class="btn btn-primary btn-block" onclick="login()" value="登陆">
+<!--  <button class="btn btn-primary btn-block" type="submit">确定</button>-->
 </form>
 
 </body>
+<script>
+  window.onload = function () {
+    var kaptchaImg = document.getElementById("kaptcha");
+
+    kaptchaImg.onclick = function () {
+      kaptchaImg.src = "/kaptcha?" + Math.floor(Math.random() * 100)
+    }
+  };
+  function login() {
+    var username = $("#username").val();
+    var password = $("#password").val();
+    var captchaCode = $("#captchaCode").val();
+    if (username === "" || password === "") {
+      alert('用户名或密码不能为空');
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      url: "/login",
+      data: {
+        "username": username,
+        "password": password,
+        "captchaCode": captchaCode
+      },
+      success: function (json) {
+        console.log("过去了");
+        if(json.isok){
+          location.href = json.data;
+        }else{
+          alert(json.message)
+        }
+
+      },
+      error: function (e) {
+        console.log(e.responseText);
+      }
+    });
+  }
+</script>
 
 </html>

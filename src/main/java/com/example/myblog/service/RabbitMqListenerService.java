@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMqListenerService {
 
-    @RabbitListener(queues = "msg_queue")
+//    @RabbitListener(queues = "msg_queue")
     public void receive(String s){
         System.out.println("监听到了消息。。。"+s);
     }
