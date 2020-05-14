@@ -126,14 +126,12 @@ public class BlogService {
 
         //封装分页
         long total = searchAll.getHits().getTotalHits().value;
-        System.out.println("total=" + total);
         long totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
         pageInfo.setTotal(total);
         pageInfo.setList(blogs);
         pageInfo.setPageNum(pageNum);
         pageInfo.setPageSize(pageSize);
         pageInfo.setTotalPage(totalPage);
-        System.out.println(i);
 
         return pageInfo;
 
