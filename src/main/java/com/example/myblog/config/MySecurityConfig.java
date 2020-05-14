@@ -99,7 +99,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler)
         .and()
              .csrf().disable().authorizeRequests()
-                .antMatchers("/login", "/kaptcha").permitAll()
+                .antMatchers("/login", "/kaptcha","/search",".index").permitAll()
                 .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
         .and()
@@ -116,6 +116,4 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .maxSessionsPreventsLogin(false)    //允许其他人登陆(只允许一个登陆，会挤掉当前)
                 .expiredSessionStrategy(new MyExpiredSessionStrategy());
     }
-
-
 }

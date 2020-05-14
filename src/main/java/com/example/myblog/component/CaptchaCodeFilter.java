@@ -74,7 +74,7 @@ public class CaptchaCodeFilter extends OncePerRequestFilter {
         }
 
         // 5. 请求验证码校验
-        if(!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+        if(!StringUtils.equalsIgnoreCase(codeInSession.getCode(), codeInRequest)) {
             throw new SessionAuthenticationException("验证码不匹配");
         }
 

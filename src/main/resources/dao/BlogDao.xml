@@ -58,6 +58,9 @@
         from blog
          join user on blog.user_id = user.id order by blog.id desc
     </select>
+    <select id="getAllBlogWithOutUser" resultType="com.example.myblog.bean.BlogWithOutUser">
+        select * from blog
+    </select>
     <insert id="insertBlog" parameterType="com.example.myblog.bean.Blog">
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
             SELECT LAST_INSERT_ID() as id

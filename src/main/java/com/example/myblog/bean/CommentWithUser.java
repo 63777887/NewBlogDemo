@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Comment {
+public class CommentWithUser {
     private Integer id;
     private Date createdTime;
     private String content;
-    private User commenter;
+    private Integer userId;
     private Integer blogId;
 }

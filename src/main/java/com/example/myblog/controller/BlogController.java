@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -36,7 +37,13 @@ public class BlogController {
                                       Model model){
 //        User user = userService.findUserByName(username);
         PageInfo<Blog> pageInfo = blogService.pageUserBlog(username, page.orElse(1), size.orElse(2));
-        User user = pageInfo.getList().get(0).getAuthor();
+        User user;
+        List<Blog> list = pageInfo.getList();
+        if (list!=null) {
+            user = list.get(0).getAuthor();
+        }else {
+            user=userService.findUserByName(username);
+        }
         model.addAttribute("user",user);
         model.addAttribute("blogs",pageInfo);
         return "list";

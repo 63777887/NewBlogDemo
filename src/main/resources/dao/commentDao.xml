@@ -6,4 +6,7 @@
     <select id="findCommentByBlogId" resultType="com.example.myblog.bean.Comment">
         select * from comment where blog_id = #{blogId};
     </select>
+    <select id="getAllComment" resultType="com.example.myblog.bean.CommentWithUser">
+        select * from comment
+    </select>
 </mapper>
