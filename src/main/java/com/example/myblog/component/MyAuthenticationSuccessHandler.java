@@ -36,6 +36,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         }else{
             //跳转到登陆之前请求的页面
             super.onAuthenticationSuccess(request,response,authentication);
+            System.out.println("authentication:---"+authentication);
         }
 
 

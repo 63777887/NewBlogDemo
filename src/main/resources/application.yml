@@ -28,10 +28,7 @@ mybatis:
   config-location: classpath:config/mabatisConfig.xml
   mapper-locations: classpath:dao/**
 
-server:
-  servlet:
-    session:
-      timeout: 10s
+
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql

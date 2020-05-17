@@ -97,9 +97,10 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
+
         .and()
              .csrf().disable().authorizeRequests()
-                .antMatchers("/login", "/kaptcha","/search",".index").permitAll()
+                .antMatchers("/login", "/kaptcha","/search","/index","/blog/*").permitAll()
                 .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
         .and()

@@ -48,6 +48,17 @@ public class BlogController {
         model.addAttribute("blogs",pageInfo);
         return "list";
     }
+    @GetMapping("/blog/{id}")
+    public String showBlogById(@PathVariable("id") Integer id,
+                               Model model){
+
+        Blog blog = blogService.getBlogInfoById(id);
+//        Blog blog = blogService.getBlogById(id);
+//        List<Comment> comments = commentService.findCommentByBlogId(id);
+        model.addAttribute("blog",blog);
+//        model.addAttribute("comments",comments);
+        return "item";
+    }
 
 
 

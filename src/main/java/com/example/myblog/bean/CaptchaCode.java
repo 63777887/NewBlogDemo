@@ -1,8 +1,9 @@
 package com.example.myblog.bean;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class CaptchaCode {
+public class CaptchaCode implements Serializable {
 
     private String code;
 

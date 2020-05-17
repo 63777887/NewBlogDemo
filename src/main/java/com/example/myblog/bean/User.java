@@ -3,6 +3,8 @@ package com.example.myblog.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,9 +12,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
-@Data
 //@Entity     //持久化
-public class User implements  UserDetails {
+public class User implements Serializable{
 //public class User {
     private Integer id;
     private String name;
@@ -20,43 +21,79 @@ public class User implements  UserDetails {
     private String email;
     private String avatar;
 
-
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Integer getId() {
+        return id;
     }
 
-    @Override
-    public String getUsername() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
     }
-    @Override
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getPassword() {
         return password;
     }
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public String getEmail() {
+        return email;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @JsonIgnore //忽略不属于user成员的方法
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public String getAvatar() {
+        return avatar;
     }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return null;
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return name;
+//    }
+//    @Override
+//    public String getPassword() {
+//        return password;
+//    }
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @JsonIgnore //忽略不属于user成员的方法
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }
