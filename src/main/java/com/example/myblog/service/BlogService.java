@@ -8,15 +8,18 @@ import com.example.myblog.dao.BlogDao;
 import com.example.myblog.dao.CommentDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.var;
 import org.apache.lucene.search.TotalHits;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -80,6 +83,7 @@ public class BlogService {
 
 
     public PageBean<BlogWithOutUser> searchBlog(String keyword, Integer pageNum, Integer pageSize) throws IOException {
+        //from-size分页
         PageBean<BlogWithOutUser> pageInfo = new PageBean<>();
         SearchRequest searchRequest = new SearchRequest("blog");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -91,49 +95,129 @@ public class BlogService {
                 .from((pageNum - 1) * pageSize)
                 .size(pageSize)
                 .trackTotalHits(true);
+
         searchRequest.source(searchSourceBuilder);
         //获取返回值
         SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 
-
-        SearchResponse searchAll = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-
         SearchHit[] hits = search.getHits().getHits();
-        System.out.println(Arrays.toString(hits));
         ArrayList<BlogWithOutUser> blogs = new ArrayList<>();
-        int i = 0;
-        for (int i1 = 0; i1 < hits.length; i1++) {
-            Map<String, Object> sourceAsMap = hits[i].getSourceAsMap();
-
-//
+        //            for (int i = 0; i < hits.length; i++) {
+//                Map<String, Object> sourceAsMap = hits[i].getSourceAsMap();
+////
+//                //吧map集合转换为对象
+//                BlogWithOutUser blogWithOutUser = JSON.parseObject(JSON.toJSONString(sourceAsMap), BlogWithOutUser.class);
+////
+//                blogs.add(blogWithOutUser);
+//            }
+        for (SearchHit hit : hits) {
+            //获取字段的集合
+            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
             //吧map集合转换为对象
             BlogWithOutUser blogWithOutUser = JSON.parseObject(JSON.toJSONString(sourceAsMap), BlogWithOutUser.class);
-//
+            System.out.println(blogWithOutUser.toString());
             blogs.add(blogWithOutUser);
         }
-//        for (SearchHit hit : hits) {
-////            BlogResp blogResp = new BlogResp();
-//            //获取字段的集合
-//            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
-//
-////
-//            //吧map集合转换为对象
-//            BlogWithOutUser blogWithOutUser = JSON.parseObject(JSON.toJSONString(sourceAsMap), BlogWithOutUser.class);
-////
-//            blogs.add(blogWithOutUser);
-//            i++;
-//        }
 
         //封装分页
-        long total = searchAll.getHits().getTotalHits().value;
+        long total = search.getHits().getTotalHits().value;
         long totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
         pageInfo.setTotal(total);
         pageInfo.setList(blogs);
         pageInfo.setPageNum(pageNum);
         pageInfo.setPageSize(pageSize);
         pageInfo.setTotalPage(totalPage);
-
         return pageInfo;
 
+
+
+
+        //sroll分页
+
+//        final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
+//        SearchRequest searchRequest = new SearchRequest("blog");
+//        searchRequest.scroll(scroll);
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title", keyword);
+//        searchSourceBuilder.query(matchQueryBuilder).size(pageSize);
+//        searchRequest.source(searchSourceBuilder);
+//
+//        SearchResponse searchResponse = null;
+//        try {
+//            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+//        } catch (IOException e) {
+//            // TODO 自动生成的 catch 块
+//            e.printStackTrace();
+//        }
+//        String scrollId = searchResponse.getScrollId();
+//        SearchHit[] searchHits = searchResponse.getHits().getHits();
+//        long total =searchResponse.getHits().getTotalHits().value;
+//        System.out.println("total---"+total);
+//
+//        ArrayList<BlogWithOutUser> blogs = new ArrayList<>();
+//        //第一次的不再循环中，需要单独拿出来
+//        if (pageNum==1) {
+//            for (SearchHit searchHit : searchHits) {
+//                Map<String, Object> map = searchHit.getSourceAsMap();
+//                BlogWithOutUser blog = JSON.parseObject(JSON.toJSONString(map), BlogWithOutUser.class);
+//                blogs.add(blog);
+//            }
+//        }else {
+//
+//            int page = 2;
+//            while (searchHits != null && searchHits.length > 0) {
+//                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+//                scrollRequest.scroll(scroll);
+//                try {
+//                    searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                scrollId = searchResponse.getScrollId();
+//                searchHits = searchResponse.getHits().getHits();
+//                if (searchHits != null && searchHits.length > 0) {
+//                    System.out.println("第" + page + "页");
+//
+//                    //吧map集合转换为对象
+////
+//                    if (page == pageNum) {
+//                        for (SearchHit h : Arrays.asList(searchHits)) {
+//                            Map<String, Object> sourceAsMap = h.getSourceAsMap();
+//                            String sourceAsString = h.getSourceAsString();
+//                            BlogWithOutUser blogWithOutUser = JSON.parseObject(JSON.toJSONString(sourceAsMap), BlogWithOutUser.class);
+//                            blogs.add(blogWithOutUser);
+//                            System.out.println(sourceAsString);
+//                        }
+//                        break;
+//                    }
+//                    page++;
+//                }
+//            }
+//        }
+//
+//
+////        for (SearchHit hit : hits) {
+//////            BlogResp blogResp = new BlogResp();
+////            //获取字段的集合
+////            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+////            //吧map集合转换为对象
+////            BlogWithOutUser blogWithOutUser = JSON.parseObject(JSON.toJSONString(sourceAsMap), BlogWithOutUser.class);
+////            blogs.add(blogWithOutUser);
+////            i++;
+////        }
+//        PageBean<BlogWithOutUser> pageInfo = new PageBean<>();
+//        //封装分页
+//
+//        long totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
+//        System.out.println(totalPage);
+//        pageInfo.setTotal(total);
+//        pageInfo.setList(blogs);
+//        pageInfo.setPageNum(pageNum);
+//        pageInfo.setPageSize(pageSize);
+//        pageInfo.setTotalPage(totalPage);
+//
+//        return pageInfo;
+//
+//    }
     }
 }
