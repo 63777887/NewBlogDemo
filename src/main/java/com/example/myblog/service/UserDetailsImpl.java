@@ -65,13 +65,15 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return this.toString().equals(obj.toString());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        UserDetailsImpl o1 = (UserDetailsImpl) o;
+        return this.user.getName().equals(o1.getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user);
+        return user.getName().hashCode();
     }
 
     @Override

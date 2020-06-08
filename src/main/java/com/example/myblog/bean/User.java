@@ -2,9 +2,7 @@ package com.example.myblog.bean;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,9 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
-//@Entity     //持久化
 public class User implements Serializable{
-//public class User {
     private Integer id;
     private String name;
     private String password;
@@ -60,7 +56,31 @@ public class User implements Serializable{
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    private void haha(){
+        System.out.println("haha");
+    }
+
 //    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        User user = (User) o;
+//        return Objects.equals(name, user.name);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name);
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "name='" + name + '\'' +
+//                '}';
+//    }
+    //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return null;
 //    }

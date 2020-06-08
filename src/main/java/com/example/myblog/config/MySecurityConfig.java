@@ -7,28 +7,35 @@ import com.example.myblog.component.MyExpiredSessionStrategy;
 import com.example.myblog.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import javax.annotation.Resource;
 
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableWebSecurity
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("db")
     private MyUserDetailService myUserDetailService;
+
+    @Autowired
+    SessionRegistry sessionRegistry;
 
 //    @Bean
 //    public AuthenticationProvider authenticationProvider() {
@@ -100,7 +107,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         .and()
              .csrf().disable().authorizeRequests()
-                .antMatchers("/login", "/kaptcha","/search","/index","/blog/*").permitAll()
+//                .antMatchers("/login", "/kaptcha","/search","/index","/blog/*").permitAll()
                 .antMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
         .and()
@@ -113,8 +120,18 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)   //session是否生成(IF_REQUIRED是在需要时创建)
                 .invalidSessionUrl("/login")    //session过期以后跳转登陆页
                 .sessionFixation().migrateSession()     //管理session的存活方式
-                .maximumSessions(1)         //只允许一个session出现
+                .maximumSessions(1)//只允许一个session出现
                 .maxSessionsPreventsLogin(false)    //允许其他人登陆(只允许一个登陆，会挤掉当前)
                 .expiredSessionStrategy(new MyExpiredSessionStrategy());
     }
+    @Bean
+    public SessionRegistry getSessionRegistry(){
+        return new SessionRegistryImpl();
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
+    }
+
 }

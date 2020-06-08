@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>test</title>
+    <style>
+        td{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<table>
+<!--    <tr th:each="t: ${table.list}">-->
+<!--        <td th:text="t.text"></td>-->
+<!--    </tr>-->
+<!--    <tr><td colspan=”3”>A</td></tr>-->
+<!--    <tr><td colspan=”2”>B</td><td rowspan=”2”>C</td></tr>-->
+<!--    <tr><td >D</td><td>E</td></tr>-->
+
+    <tr th:each="t: ${tableTest}">
+        <td th:each="son: ${t.getChilds()}" th:text="${son.getText()}">"${blog.title}" </td>
+    </tr>
+</table>
+</body>
+</html>

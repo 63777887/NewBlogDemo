@@ -2,6 +2,7 @@ package com.example.myblog.dao;
 
 import com.example.myblog.bean.Blog;
 import com.example.myblog.bean.BlogWithOutUser;
+import com.sun.org.apache.bcel.internal.util.ClassLoader;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -22,4 +23,5 @@ public interface BlogDao {
     List<Blog> getAllBlog();
 
     List<BlogWithOutUser> getAllBlogWithOutUser();
+
 }

@@ -27,9 +27,9 @@ public class MailService {
 //        url+=token;
 //        msg+=url;
         msg="你已经注册半圆网络的blog，您的验证码是："+token+msg+url;
-        redisService.storeToken(String.valueOf(token), name, 60);
-        redisService.storeToken(name,String.valueOf(token),60);
-        String email = userService.findUserByName(name).getEmail();
+//        redisService.storeToken(String.valueOf(token), name, 60);
+//        redisService.storeToken(name,String.valueOf(token),60);
+//        String email = userService.findUserByName(name).getEmail();
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("63777887@qq.com");

@@ -19,6 +19,7 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+
     @GetMapping("/login")
     public String showLogin(@RequestParam(required = false) String next,
                             HttpSession session){

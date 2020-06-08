@@ -8,6 +8,7 @@ import com.example.myblog.bean.CommentWithUser;
 import com.example.myblog.dao.BlogDao;
 import com.example.myblog.dao.CommentDao;
 import com.example.myblog.service.BlogService;
+import com.example.myblog.service.MailService;
 import com.example.myblog.service.RedisService;
 import com.example.myblog.service.UserService;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -66,6 +67,8 @@ class MyBlogApplicationTests {
     BlogDao blogDao;
     @Autowired
     CommentDao commentDao;
+    @Autowired
+    MailService mailService;
 
 
 
@@ -172,6 +175,6 @@ class MyBlogApplicationTests {
     }
     @Test
     void test05(){
-
+        mailService.sendActiveMsg("jdsajk");
     }
 }
